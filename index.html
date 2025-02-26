@@ -424,7 +424,7 @@
                 contentHTML = `
                     <h2>${title}</h2>
                     <p>${description}</p>
-                    <div class="code-block">${content}</div>
+                    <div class="code-block"><pre><code>${content}</code></pre></div>
                     <button class="download-button" onclick="downloadFile('${title}', '${encodeURIComponent(content)}')">Download HTML</button>
                 `;
             } else {
@@ -465,12 +465,20 @@
         fetch('/data')
             .then(response => response.json())
             .then(data => {
-                const fileCards = [createCard('template File', 'html template content', data.templateContent, 'html')];
-                const codeCards = [createCard('Backend Code', 'backend code Snippet', data.backendCode, 'js')];
-                const languageCard = createCard('languages used', '', `<ul><li>html</li><li>css</li><li>javascript</li></ul>`, 'plain');
+                const fileCards = [
+                    createCard('Template File', 'HTML template content', data.templateContent, 'html')
+                ];
+
+                const codeCards = [
+                    createCard('Backend Code', 'Backend code snippet', data.backendCode, 'javascript')
+                ];
+
+                const languageCard = createCard('Languages used', '', `<ul><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>`, 'plain');
+
                 appendCards('file-container', fileCards);
                 appendCards('code-container', codeCards);
                 appendCards('language-container', [languageCard]);
+
                 gsap.fromTo('.card', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.5, ease: "power2.out", stagger: 0.2 });
             })
             .catch(error => {
@@ -481,6 +489,7 @@
             });
 
         let codeMirrorEditor;
+
         document.addEventListener('DOMContentLoaded', () => {
             codeMirrorEditor = CodeMirror.fromTextArea(document.getElementById("codeEditor"), {
                 mode: "htmlmixed",
@@ -490,13 +499,16 @@
                 matchBrackets: true
             });
         });
+
         function openEditorModal() {
             document.getElementById('editorModal').style.display = 'block';
             codeMirrorEditor.refresh();
         }
+
         function closeEditorModal() {
             document.getElementById('editorModal').style.display = 'none';
         }
+
     </script>
 </body>
 </html>
